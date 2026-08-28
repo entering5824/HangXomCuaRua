@@ -1,0 +1,16 @@
+* { box-sizing: border-box; }
+:root {
+  font-family: Inter, "Segoe UI Variable", system-ui, sans-serif;
+  color: rgba(255,255,255,.9);
+  color-scheme: dark;
+  font-synthesis: none;
+  --surface-0: #07080c;
+  --surface-1: #0d0f16;
+  --glass-border: rgba(255,255,255,.085);
+}
+html, body, #root { width: 100%; height: 100%; overflow: hidden; }
+body { margin: 0; font-optical-sizing: auto; letter-spacing: -.012em; background: var(--surface-0); -webkit-font-smoothing: antialiased; }
+button, input { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: default; }
+::selection { color: white; background: color-mix(in srgb, var(--accent-color, #7f93ff) 55%, transparent); }

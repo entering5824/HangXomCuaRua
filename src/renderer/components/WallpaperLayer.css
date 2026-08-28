@@ -1,0 +1,22 @@
+.wallpaper-layer { position: fixed; inset: -1%; z-index: 0; overflow: hidden; background: #08090d; transform: translate3d(var(--parallax-wallpaper-x, 0px), var(--parallax-wallpaper-y, 0px), 0) scale(1.02); will-change: transform; pointer-events: none; }
+.wallpaper-layer__media { position: absolute; inset: 0; }
+.wallpaper-layer.is-idle .wallpaper-layer__media { animation: wallpaper-idle 20s ease-in-out both; }
+.wallpaper-layer__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(.88) saturate(1.04); user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
+.wallpaper-layer__img--previous { animation: wallpaper-exit 440ms ease-out both; }
+.wallpaper-layer__img--current { animation: wallpaper-enter 620ms cubic-bezier(.22, .8, .28, 1) 80ms both; }
+.wallpaper-layer--empty { position: absolute; inset: 0; background: radial-gradient(circle at center, #24283b, #08090d 70%); }
+@keyframes wallpaper-enter {
+  0% { opacity: 0; transform: scale(1.03); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes wallpaper-exit {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.02); }
+}
+@keyframes wallpaper-idle { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(-4px, 0, 0) scale(1.01); } }
+@media (prefers-reduced-motion: reduce) {
+  .wallpaper-layer { --parallax-wallpaper-x: 0px; --parallax-wallpaper-y: 0px; transform: translate3d(0, 0, 0) scale(1.02); }
+  .wallpaper-layer.is-idle .wallpaper-layer__media { animation: none; }
+  .wallpaper-layer__img--previous { animation-duration: 220ms; animation-delay: 0ms; }
+  .wallpaper-layer__img--current { animation-duration: 260ms; animation-delay: 0ms; }
+}

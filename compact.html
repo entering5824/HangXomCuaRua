@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Launcher compact</title>
+  </head>
+  <body>
+    <main id="compact-shell" class="compact-shell" aria-label="Launcher rút gọn">
+      <section class="compact-active" aria-live="polite">
+        <span id="compact-art" class="compact-active__art" aria-hidden="true"></span>
+        <span class="compact-active__copy">
+          <strong id="compact-name">Game đang chạy</strong>
+          <span class="compact-active__status"><i></i><span id="compact-runtime">ĐANG CHẠY</span></span>
+        </span>
+      </section>
+      <div id="compact-games" class="compact-games" aria-label="Chuyển game"></div>
+      <button id="compact-expand" class="compact-expand" type="button" aria-label="Mở launcher đầy đủ" title="Mở launcher đầy đủ"></button>
+    </main>
+    <script type="module" src="/src/compact/main.ts"></script>
+  </body>
+</html>

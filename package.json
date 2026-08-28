@@ -1,0 +1,69 @@
+{
+  "name": "hang-xom-cua-rua",
+  "version": "1.2.0",
+  "description": "Premium anime game launcher — Hàng Xóm của Rùa",
+  "main": "dist-electron/main/index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build && electron-builder",
+    "build:unsigned": "tsc && vite build && electron-builder --config.win.signAndEditExecutable=false",
+    "lint": "eslint src vite.config.mts eslint.config.mjs",
+    "preview": "vite preview",
+    "electron:dev": "vite --host 127.0.0.1 --port 5180 --strictPort",
+    "electron:build": "vite build && electron-builder",
+    "electron:build:unsigned": "vite build && electron-builder --config.win.signAndEditExecutable=false"
+  },
+  "keywords": [
+    "electron",
+    "game-launcher",
+    "anime"
+  ],
+  "author": "Hàng Xóm của Rùa",
+  "license": "MIT",
+  "dependencies": {
+    "electron-store": "^11.0.2",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.2.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.0.5",
+    "electron": "^43.4.0",
+    "electron-builder": "^26.15.3",
+    "eslint": "^10.8.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.4",
+    "globals": "^17.11.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.67.0",
+    "vite": "^8.2.1",
+    "vite-plugin-electron": "^1.1.1"
+  },
+  "build": {
+    "appId": "com.hangxomcuarua.launcher",
+    "productName": "Hàng Xóm của Rùa",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "logo.png"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "src/assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "allowScripts": {
+    "electron@43.4.0": true
+  }
+}
