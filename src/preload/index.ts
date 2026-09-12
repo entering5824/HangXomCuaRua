@@ -19,6 +19,7 @@ const api = {
   toggleMaximize: () => ipcRenderer.send(IPC.WIN_TOGGLE_MAXIMIZE),
   setWindowSize: (width: number, height: number) => ipcRenderer.invoke(IPC.WIN_SET_SIZE, width, height),
   fitWindowToWorkArea: () => ipcRenderer.invoke(IPC.WIN_FIT_WORKAREA),
+  showCompactController: () => ipcRenderer.invoke(IPC.COMPACT_SHOW) as Promise<boolean>,
   close: () => ipcRenderer.send(IPC.WIN_CLOSE)
 }
 

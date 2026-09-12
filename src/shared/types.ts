@@ -48,7 +48,6 @@ export interface CompactGame {
   id: string
   name: string
   iconPath?: string
-  artworkPath?: string
   accentColor?: string
   initials: string
   isRunning: boolean
@@ -99,5 +98,6 @@ export const IPC = {
   COMPACT_GET_STATE: 'compact:get-state',
   COMPACT_SELECT_GAME: 'compact:select-game',
   COMPACT_EXPAND: 'compact:expand',
+  COMPACT_SHOW: 'compact:show',
   COMPACT_STATE: 'compact:state'
 } as const

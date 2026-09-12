@@ -54,6 +54,12 @@
       "dist-electron/**/*",
       "logo.png"
     ],
+    "extraResources": [
+      {
+        "from": "carousel",
+        "to": "carousel"
+      }
+    ],
     "win": {
       "target": "nsis",
       "icon": "src/assets/icon.ico"

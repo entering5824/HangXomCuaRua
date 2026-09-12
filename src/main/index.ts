@@ -88,16 +88,11 @@ function compactState(): CompactState {
   return {
     games: data.games.map((game) => {
       const runtime = runningGames.get(game.id)
-      const iconPath = game.thumbnailPath || game.carouselThumbnailPaths?.[0] || (game.logoPath && !isVideoPath(game.logoPath)
-        ? game.logoPath
-        : game.coverPath && !isVideoPath(game.coverPath) ? game.coverPath : undefined)
-      const artworkPath = [game.coverPath, game.wallpaperPath, ...(game.carouselPaths ?? [])]
-        .find((mediaPath): mediaPath is string => typeof mediaPath === 'string' && mediaPath.length > 0 && !isVideoPath(mediaPath))
+      const iconPath = game.logoPath
       return {
         id: game.id,
         name: game.name,
         iconPath,
-        artworkPath,
         accentColor: game.gameTheme?.accent || game.accentColor,
         initials: compactInitials(game.name),
         isRunning: Boolean(runtime),
@@ -243,13 +238,14 @@ function gameCarouselDirectory(game: Game) {
     .replace(/[<>:"/\\|?*]/g, '-')
     .replace(/[. ]+$/g, '')
     .trim() || game.id
-  return path.join(app.getAppPath(), 'carousel', folderName)
+  const carouselRoot = app.isPackaged ? path.join(process.resourcesPath, 'carousel') : path.join(app.getAppPath(), 'carousel')
+  return path.join(carouselRoot, folderName)
 }
 
 async function syncGameCarousel(game: Game, force = false): Promise<Game> {
   if (!game.exePath) return game
   const carouselDirectory = gameCarouselDirectory(game)
-  await fs.promises.mkdir(carouselDirectory, { recursive: true })
+  if (!app.isPackaged) await fs.promises.mkdir(carouselDirectory, { recursive: true })
   const directoryModifiedAt = (await fs.promises.stat(carouselDirectory)).mtime.toISOString()
   const storedPathsAreAvailable = (game.carouselPaths ?? []).every((mediaPath) => /^(data:|https?:|file:|blob:)/i.test(mediaPath) || fs.existsSync(mediaPath))
   if (!force && game.carouselSourceModifiedAt === directoryModifiedAt && storedPathsAreAvailable) return game
@@ -341,6 +337,17 @@ function restoreMainWindow(selectedGameId?: string) {
   closeCompactWindow()
   createMainWindow()
   windowTransitioning = false
+}
+
+function showCompactWindow() {
+  if (runningGames.size === 0) return false
+  windowTransitioning = true
+  rememberMainWindowBounds()
+  createCompactWindow()
+  if (mainWindow && !mainWindow.isDestroyed()) mainWindow.destroy()
+  mainWindow = null
+  windowTransitioning = false
+  return true
 }
 
 app.whenReady().then(() => {
@@ -462,3 +469,4 @@ ipcMain.handle(IPC.COMPACT_EXPAND, () => {
   restoreMainWindow()
   return true
 })
+ipcMain.handle(IPC.COMPACT_SHOW, () => showCompactWindow())

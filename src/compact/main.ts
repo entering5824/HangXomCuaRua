@@ -47,13 +47,12 @@ function renderActive(game?: CompactGame) {
   shell?.style.setProperty('--compact-accent', game.accentColor || '#8ea2ff')
   if (!activeArt) return
   activeArt.replaceChildren()
-  const artworkPath = game.artworkPath || game.iconPath
-  if (!artworkPath) {
+  if (!game.iconPath) {
     activeArt.textContent = game.initials || initials(game.name)
     return
   }
   const image = document.createElement('img')
-  image.src = imageUrl(artworkPath)
+  image.src = imageUrl(game.iconPath)
   image.alt = ''
   image.draggable = false
   image.addEventListener('error', () => { activeArt.replaceChildren(); activeArt.textContent = game.initials || initials(game.name) }, { once: true })
@@ -104,11 +103,17 @@ function render(state: CompactState) {
 expandButton?.append(new DOMParser().parseFromString(expandIcon, 'image/svg+xml').documentElement)
 expandButton?.addEventListener('click', () => { void window.compactAPI.expand() })
 
-window.setInterval(() => {
+const runtimeTimer = window.setInterval(() => {
   if (!latestState || !activeRuntime) return
   const current = activeGame(latestState)
   if (current?.isRunning) activeRuntime.textContent = elapsedLabel(current.startedAt)
 }, 1000)
 
 void window.compactAPI.getState().then(render)
-window.compactAPI.onStateChanged(render)
+const removeStateListener = window.compactAPI.onStateChanged(render)
+
+window.addEventListener('beforeunload', () => {
+  window.clearInterval(runtimeTimer)
+  removeStateListener()
+  latestState = null
+})

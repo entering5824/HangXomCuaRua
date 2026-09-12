@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useStore } from '../../store/useStore'
 import './TopBar.css'
 
 const logoUrl = new URL('../../../logo.png', import.meta.url).href
@@ -13,6 +14,7 @@ const resolutionPresets = [
 ]
 
 export default function TopBar() {
+  const hasRunningGames = useStore((state) => state.runningGameIds.length > 0)
   const [resolutionOpen, setResolutionOpen] = useState(false)
   const [windowSize, setWindowSize] = useState(() => ({ width: window.innerWidth, height: window.innerHeight }))
   const pickerRef = useRef<HTMLDivElement>(null)
@@ -81,6 +83,9 @@ export default function TopBar() {
           )}
         </div>
 
+        {hasRunningGames && <button type="button" onClick={() => void window.electronAPI.showCompactController()} className="window-control-btn" aria-label="Thu gọn về trình điều khiển" title="Thu gọn về trình điều khiển">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 5.25V3h2.25M13 5.25V3h-2.25M3 10.75V13h2.25M13 10.75V13h-2.25" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+        </button>}
         <span className="topbar-actions__divider" aria-hidden="true" />
         <button type="button" onClick={() => window.electronAPI.minimize()} className="window-control-btn" aria-label="Thu nhỏ">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
